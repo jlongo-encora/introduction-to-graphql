@@ -1,22 +1,8 @@
 const { ApolloServer } = require('@apollo/server');
 const { startStandaloneServer } = require('@apollo/server/standalone');
 const { ApolloServerPluginLandingPageGraphQLPlayground } = require('@apollo/server-plugin-landing-page-graphql-playground');
+const { buildSubgraphSchema } = require('@apollo/federation');
 const gql = require('graphql-tag');
-
-const users = [
-  {
-    uid: 1,
-    firstName: 'João',
-    lastName: 'Longo',
-    age: 34,
-  },
-  {
-    uid: 2,
-    firstName: 'Test',
-    lastName: 'User',
-    age: 18,
-  }
-];
 
 const products = [
   {
@@ -35,6 +21,25 @@ const purchases = {
   1: [1],
 };
 
+const typeDefs = gql`
+  type Product @key(fields: "pid") {
+    pid: Int!
+    name: String
+    price: Float
+  }
+
+  extend type User @key(fields: "uid") {
+    uid: Int! @external
+    firstName: String @external
+    lastName: String @external
+    purchases: [Product!]! @requires(fields: "firstName lastName")
+  }
+
+  extend type Mutation {
+    buyProduct(uid: Int!, pid: Int!): Product!
+  }
+`;
+
 const getPurchases = async (uid) => {
   const pids = purchases[uid];
   if (!pids) {
@@ -44,41 +49,14 @@ const getPurchases = async (uid) => {
   return pids.map(pid => products.find(product => product.pid === pid));
 };
 
-// Schema-first
-const typeDefs = gql`
-  type User {
-    uid: Int!
-    firstName: String
-    lastName: String
-    age: Int
-    purchases: [Product!]!
-  }
-
-  type Product {
-    pid: Int!
-    name: String
-    price: Float
-  }
-
-  type Query {
-    user(uid: Int!): User
-    users: [User!]!
-  }
-
-  type Mutation {
-    buyProduct(uid: Int!, pid: Int!): Product!
-  }
-`;
-
 const resolvers = {
-  Query: {
-    async user(_, args) {
-      console.log('[USER] Getting user', args.uid);
-      return users.find(user => user.uid === args.uid);
-    },
-    async users(_, args) {
-      console.log('[USER] Getting users');
-      return users;
+  Product: {
+
+  },
+  User: {
+    async purchases(user) {
+      console.log('[PRODUCT] Getting purchases', user);
+      return await getPurchases(user.uid);
     },
   },
   Mutation: {
@@ -98,21 +76,11 @@ const resolvers = {
       return product;
     }
   },
-  User: {
-    async purchases(user) {
-      console.log('[PRODUCT] Getting purchases', user);
-      return await getPurchases(user.uid);
-    },
-  },
-  Product: {
-
-  },
 };
 
 const startServer = async () => {
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema: buildSubgraphSchema({ typeDefs, resolvers }),
     csrfPrevention: false,
     introspection: true,
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],

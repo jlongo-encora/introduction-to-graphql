@@ -1,11 +1,12 @@
 {
-  "name": "api",
+  "name": "product",
   "scripts": {
     "clean": "rm -rf node_modules",
     "build": "npm run clean && npm ci",
-    "start": "PORT=4000 node index.js"
+    "start": "PORT=4002 node index.js"
   },
   "dependencies": {
+    "@apollo/federation": "0.38.1",
     "@apollo/server": "4.5.0",
     "@apollo/server-plugin-landing-page-graphql-playground": "4.0.0",
     "graphql": "16.6.0",
