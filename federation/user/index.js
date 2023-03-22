@@ -46,7 +46,9 @@ const startServer = async () => {
     schema: buildSubgraphSchema({ typeDefs, resolvers }),
     csrfPrevention: false,
     introspection: true,
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+    plugins: [
+      ApolloServerPluginLandingPageGraphQLPlayground(),
+    ],
   });
 
   const { url } = await startStandaloneServer(server, {
