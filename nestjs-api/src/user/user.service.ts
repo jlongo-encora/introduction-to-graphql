@@ -21,8 +21,4 @@ export class UserService {
   async getUser(uid: number): Promise<User | undefined> {
     return users.find(user => user.uid === uid);
   }
-
-  async getUsers(): Promise<User[]> {
-    return users;
-  }
 }

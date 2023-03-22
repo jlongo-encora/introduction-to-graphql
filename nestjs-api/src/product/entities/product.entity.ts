@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 export class Product {
@@ -8,6 +8,6 @@ export class Product {
   @Field(() => String)
   name!: string;
 
-  @Field(() => Int)
+  @Field(() => Float)
   price!: number;
 }

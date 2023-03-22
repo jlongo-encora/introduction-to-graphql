@@ -21,6 +21,15 @@ const purchases = {
   1: [1],
 };
 
+const getPurchases = async (uid) => {
+  const pids = purchases[uid];
+  if (!pids) {
+    return [];
+  }
+
+  return pids.map(pid => products.find(product => product.pid === pid));
+};
+
 const typeDefs = gql`
   type Product @key(fields: "pid") {
     pid: Int!
@@ -39,15 +48,6 @@ const typeDefs = gql`
     buyProduct(uid: Int!, pid: Int!): Product!
   }
 `;
-
-const getPurchases = async (uid) => {
-  const pids = purchases[uid];
-  if (!pids) {
-    return [];
-  }
-
-  return pids.map(pid => products.find(product => product.pid === pid));
-};
 
 const resolvers = {
   Product: {
@@ -83,7 +83,9 @@ const startServer = async () => {
     schema: buildSubgraphSchema({ typeDefs, resolvers }),
     csrfPrevention: false,
     introspection: true,
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+    plugins: [
+      ApolloServerPluginLandingPageGraphQLPlayground(),
+    ],
   });
 
   const { url } = await startStandaloneServer(server, {

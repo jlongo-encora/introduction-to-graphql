@@ -1,0 +1,25 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Product {
+  pid: Int!
+  name: String!
+  price: Float!
+}
+
+type User {
+  uid: Int!
+  firstName: String
+  lastName: String
+  age: Int
+  purchases: [Product!]!
+}
+
+type Query {
+  user(uid: Int!): User
+}
+
+type Mutation {
+  buyProduct(uid: Int!, pid: Int!): Product!
+}

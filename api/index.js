@@ -62,7 +62,6 @@ const typeDefs = gql`
 
   type Query {
     user(uid: Int!): User
-    users: [User!]!
   }
 
   type Mutation {
@@ -75,10 +74,6 @@ const resolvers = {
     async user(_, args) {
       console.log('[USER] Getting user', args.uid);
       return users.find(user => user.uid === args.uid);
-    },
-    async users(_, args) {
-      console.log('[USER] Getting users');
-      return users;
     },
   },
   Mutation: {

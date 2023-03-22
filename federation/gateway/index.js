@@ -15,13 +15,11 @@ const gateway = new ApolloGateway({
 const startServer = async () => {
   const server = new ApolloServer({
     gateway,
-    // Apollo Graph Manager (previously known as Apollo Engine)
-    // When enabled and an `ENGINE_API_KEY` is set in the environment,
-    // provides metrics, schema management and trace reporting.
-    engine: false,
     csrfPrevention: false,
     introspection: true,
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+    plugins: [
+      ApolloServerPluginLandingPageGraphQLPlayground(),
+    ],
   });
 
   const { url } = await startStandaloneServer(server, {
