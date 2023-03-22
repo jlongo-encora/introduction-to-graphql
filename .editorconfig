@@ -1,8 +1,5 @@
-# Install the "EditorConfig for VS Code" VSCode extension
-
 root = true
 
-# Default config
 [*]
 end_of_line = lf
 charset = utf-8
@@ -11,6 +8,5 @@ indent_size = 2
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-# JSON config
 [*.json]
 indent_size = 2
