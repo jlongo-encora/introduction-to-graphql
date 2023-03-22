@@ -1,5 +1,5 @@
 {
-  "name": "api-demo",
+  "name": "nestjs-api",
   "scripts": {
     "clean": "rm -rf node_modules && rm -rf dist",
     "build": "npm run clean && npm ci && npm run nest:build",

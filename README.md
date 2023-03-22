@@ -1,5 +1,7 @@
 # Introduction to GraphQL
 
+Educational examples for the "Introduction to GraphQL" presentation. They are not production ready.
+
 ## Folders
 
 ### api
